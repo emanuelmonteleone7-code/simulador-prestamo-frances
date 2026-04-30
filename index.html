@@ -416,7 +416,7 @@ function calcTabla(monto, tasa, plazo, adv) {
       capAdv = cap * (1+r) * (Math.pow(1+r, gE) - 1) / r;
     else if (gE > 0 && r === 0 && cap > 0)
       capAdv = cap * gE;
-    const intAh  = capAdv * r;
+    const intAh  = gE > 0 ? Math.max(gE * cT - capAdv, 0) : 0;
     const totPag = cT + capAdv;
     saldo = Math.max(saldo - cap - capAdv, 0);
     rows.push({ n, sI, cT, cap, int, sF, g, capAdv, saldo, intAh, totPag, hasAdv: g > 0 });
