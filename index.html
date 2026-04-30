@@ -379,10 +379,14 @@ td.c-adv-center{text-align:center}
 const S = { monto: 500000, tasa: 36, plazo: 24, adv: {}, rateType: 'TNA' };
 
 // ── Format ───────────────────────────────────────────────────────────────
-const N0 = new Intl.NumberFormat('es-AR',{maximumFractionDigits:0});
-const N2 = new Intl.NumberFormat('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2});
-const $ = n => '$' + N0.format(Math.round(n));
-const P = n => n.toFixed(2) + '%';
+function fmtNum(n, dec = 0) {
+  const abs = Math.abs(Math.round(n * Math.pow(10, dec)) / Math.pow(10, dec));
+  const [int, frac] = abs.toFixed(dec).split('.');
+  const miles = int.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  return (n < 0 ? '-' : '') + (dec > 0 ? miles + ',' + frac : miles);
+}
+const $ = n => '$' + fmtNum(n);
+const P = n => fmtNum(n, 2) + '%';
 const dash = '<span class="dash">—</span>';
 
 // ── Loan math ─────────────────────────────────────────────────────────────
